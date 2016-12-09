@@ -230,16 +230,24 @@ myApp.controller('HomeCtrl', ['$scope', '$http', '$window', '$rootScope', functi
 //living room
 myApp.controller('LivingRoomCtrl', ['$scope', '$http', '$window','$rootScope', function($scope, $http, $window,$rootScope) {
     console.log("Hello World from living room  controller");
+		
+		//session checking
 	$http.get('/sessioncheck').success(function(response) {
-		console.log(response);
-		if(response.toString() == 'not exist'){
-			$rootScope.loginlogout='Login';
-			$rootScope.username="";
-		}
-		else{
-			$rootScope.loginlogout='Logout';
-			$rootScope.username=response.toString();
-			$scope.detail= function(name,manu,price)
+    console.log("I got the data I requested");
+    console.log(response);
+	
+	if(response.toString() == 'not exist'){
+		$rootScope.loginlogout='Login';
+		$rootScope.username="";
+	}
+	else{
+		$rootScope.loginlogout='Logout';
+		$rootScope.username=response.toString();
+	}
+
+  });
+  
+		$scope.detail= function(name,manu,price)
 			{
 				Item_name=name;
 				Item_manu=manu;
@@ -250,9 +258,6 @@ myApp.controller('LivingRoomCtrl', ['$scope', '$http', '$window','$rootScope', f
 				});
 			};
 
-		}
-
-	});
 
 }]);﻿
 
@@ -271,7 +276,6 @@ myApp.controller('BedroomCtrl', ['$scope', '$http', '$window','$rootScope', func
 		else{
 			$rootScope.loginlogout='Logout';
 			$rootScope.username=response.toString();
-
 
 		}
 
@@ -302,7 +306,13 @@ myApp.controller('DiningroomCtrl', ['$scope', '$http', '$window','$rootScope' , 
 		else{
 			$rootScope.loginlogout='Logout';
 			$rootScope.username=response.toString();
-			$scope.detail= function(name,manu,price)
+			
+
+		}
+
+	});
+	
+	$scope.detail= function(name,manu,price)
 			{
 				Item_name=name;
 				Item_manu=manu;
@@ -312,10 +322,6 @@ myApp.controller('DiningroomCtrl', ['$scope', '$http', '$window','$rootScope' , 
 					console.log(response);
 				});
 			};
-
-		}
-
-	});
 
 }]);﻿
 
@@ -336,6 +342,7 @@ myApp.controller('StudyroomCtrl', ['$scope', '$http', '$window' ,'$rootScope', f
 		}
 
 	});
+	
 	$scope.detail= function(name,manu,price)
 	{
 		Item_name=name;
@@ -411,16 +418,20 @@ myApp.controller('ProductCtrl', ['$scope', '$http', '$window', '$location', '$ro
 
 			//fetch data from itemlist
 			// $http.get('/customerlist/'+ Item_name +'/'+ Item_manu +'/'+ Item_price).success(function(response) {
-				$http.get('/customerlist/').success(function(response) {
+						
+		}
+
+	});
+	
+	//view item details
+	$http.get('/customerlist/').success(function(response) {
 				console.log("I got the item info");
 				console.log(response);
-				
 				$scope.Item=response ;
 
-
 			});
-
-			// add item into user's cart
+	
+	// add item into user's cart
 			$scope.addToCart = function()
 			{
 				console.log($rootScope.Item);
@@ -460,9 +471,6 @@ myApp.controller('ProductCtrl', ['$scope', '$http', '$window', '$location', '$ro
 					});
 				}
 			};
-		}
-
-	});
 
 }]);
 
@@ -477,6 +485,8 @@ myApp.controller('CartCtrl', ['$scope', '$http', '$window', '$rootScope', '$loca
 		if(response.toString() == 'not exist'){
 			$rootScope.loginlogout='Login';
 			$rootScope.username="";
+			$window.alert("Please Sign in to see items you may have already added to your cart..!")
+			$location.path('/login');
 		}
 		else{
 			$rootScope.loginlogout='Logout';
